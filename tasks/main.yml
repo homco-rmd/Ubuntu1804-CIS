@@ -29,7 +29,7 @@
 
 - include: section2.yml
   become: true
-  when: ubuntu1804cis_section2
+  when: ubuntu1804cis_section2 and not ubuntu1804cis_skip_service_checks|bool
   tags: section2
 
 - include: section3.yml

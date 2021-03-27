@@ -530,6 +530,7 @@
       name: autofs
       enabled: false
   when:
+      - not ubuntu1804cis_skip_service_checks|bool
       - not ubuntu1804cis_allow_autofs
       - autofs_service_status.stdout == "loaded"
       - ubuntu1804cis_rule_1_1_22
