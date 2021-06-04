@@ -245,6 +245,7 @@ ubuntu1804cis_rule_5_3_1: true
 ubuntu1804cis_rule_5_3_2: true
 ubuntu1804cis_rule_5_3_3: true
 ubuntu1804cis_rule_5_3_4: true
+ubuntu1804cis_rule_5_3_5: true
 ubuntu1804cis_rule_5_4_1_1: true
 ubuntu1804cis_rule_5_4_1_2: true
 ubuntu1804cis_rule_5_4_1_3: true
@@ -449,6 +450,7 @@ ubuntu1804cis_pass:
   warn_age: 7
   inactive: 30
   history: 5
+  retry: 3
 
 ubuntu1804cis_password_change_date_in_future_action: expire # lock
 

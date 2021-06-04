@@ -622,6 +622,19 @@
       - patch
       - rule_5.3.4
 
+- name: "SCORED | 5.3.5 | PATCH | Ensure password creation retry is limited"
+  lineinfile:
+      dest: /etc/pam.d/common-password
+      regexp: "password\\s+\\w+\\s+pam_pwquality\\.so\\s+retry.*"
+      line: "password        requisite                       pam_pwquality.so retry={{ ubuntu1804cis_pass['retry'] }}"
+  when:
+      - ubuntu1804cis_rule_5_3_5
+  tags:
+      - level1
+      - scored
+      - patch
+      - rule_5.3.5
+
 - name: "SCORED | 5.4.1.1 | PATCH | Ensure password expiration is 365 days or less"
   lineinfile:
       state: present
