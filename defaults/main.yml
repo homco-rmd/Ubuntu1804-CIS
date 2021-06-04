@@ -408,6 +408,7 @@ ubuntu1804cis_warning_banner: |
 
 ## Section 4 Vars
 ubuntu1804cis_auditd:
+  space_left_action: halt
   admin_space_left_action: halt
   max_log_file_action: keep_logs
   max_audit_log_file_size: 10
