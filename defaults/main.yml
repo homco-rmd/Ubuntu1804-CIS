@@ -1,5 +1,7 @@
 ---
 # defaults file for Ubuntu1804-CIS
+ubuntu1804cis_offline: false
+
 ubuntu1804cis_skip_for_travis: false
 
 ubuntu1804cis_skip_service_checks: false
