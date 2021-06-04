@@ -109,10 +109,12 @@
 
 - name: "SCORED | 5.1.8 | PATCH | Ensure at/cron is restricted to authorized users"
   block:
-      - name: "SCORED | 5.1.8 | PATCH | Ensure at is restricted to authorized users"
+      - name: "SCORED | 5.1.8.1 | PATCH | Ensure at is restricted to authorized users"
         file:
             dest: /etc/at.deny
             state: absent
+        when:
+          - ubuntu1804cis_rule_5_1_8_1
 
       - name: "SCORED | 5.1.8 | PATCH | Ensure at is restricted to authorized users"
         template:
