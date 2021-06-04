@@ -306,7 +306,7 @@
 - name: "NOTSCORED | 3.3.3 | PATCH | Ensure /etc/hosts.deny is configured"
   lineinfile:
       dest: /etc/hosts.deny
-      regexp: "^(#)?ALL"
+      regexp: "^(#)?\\s*ALL:"
       line: "ALL: ALL"
   when:
       - ubuntu1804cis_setup_tcp_wrappers
