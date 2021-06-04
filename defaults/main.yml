@@ -1,5 +1,7 @@
 ---
 # defaults file for Ubuntu1804-CIS
+ubuntu1804cis_offline: false
+
 ubuntu1804cis_skip_for_travis: false
 
 ubuntu1804cis_skip_service_checks: false
@@ -215,6 +217,7 @@ ubuntu1804cis_rule_5_1_5: true
 ubuntu1804cis_rule_5_1_6: true
 ubuntu1804cis_rule_5_1_7: true
 ubuntu1804cis_rule_5_1_8: true
+ubuntu1804cis_rule_5_1_8_1: true
 ubuntu1804cis_rule_5_2_1: true
 ubuntu1804cis_rule_5_2_2: true
 ubuntu1804cis_rule_5_2_3: true
@@ -242,6 +245,7 @@ ubuntu1804cis_rule_5_3_1: true
 ubuntu1804cis_rule_5_3_2: true
 ubuntu1804cis_rule_5_3_3: true
 ubuntu1804cis_rule_5_3_4: true
+ubuntu1804cis_rule_5_3_5: true
 ubuntu1804cis_rule_5_4_1_1: true
 ubuntu1804cis_rule_5_4_1_2: true
 ubuntu1804cis_rule_5_4_1_3: true
@@ -252,7 +256,7 @@ ubuntu1804cis_rule_5_4_3: true
 ubuntu1804cis_rule_5_4_4: true
 ubuntu1804cis_rule_5_4_5: true
 ubuntu1804cis_rule_5_5: true
-ubuntu1804cis_rule_5_6: false
+ubuntu1804cis_rule_5_6: true
 
 # Section 6 rules
 ubuntu1804cis_rule_6_1_1: true
@@ -336,6 +340,12 @@ ubuntu1804cis_is_router: false
 # IPv6 required
 ubuntu1804cis_ipv6_required: true
 
+# TCP Ports to open for Firewall
+ubuntu1804cis_firewall_open_tcp_ports: []
+
+# UDP Ports to open for Firewall
+ubuntu1804cis_firewall_open_udp_ports: []
+
 # AIDE
 ubuntu1804cis_config_aide: true
 # AIDE cron settings
@@ -404,6 +414,7 @@ ubuntu1804cis_warning_banner: |
 
 ## Section 4 Vars
 ubuntu1804cis_auditd:
+  space_left_action: halt
   admin_space_left_action: halt
   max_log_file_action: keep_logs
   max_audit_log_file_size: 10
@@ -446,10 +457,14 @@ ubuntu1804cis_pass:
   warn_age: 7
   inactive: 30
   history: 5
+  retry: 3
 
 ubuntu1804cis_password_change_date_in_future_action: expire # lock
 
 ubuntu1804cis_shell_timeout: 900
+
+ubuntu1804cis_restricted_consoles_regex: "^((?!.*).)*$"   # default will not match anything and therefore not remove
+
 # Syslog system
 ubuntu1804cis_syslog: rsyslog
 # ubuntu1804cis_syslog: syslog-ng
@@ -493,7 +508,7 @@ tmp_mount_file:
   Debian: /usr/share/systemd/tmp.mount
 tmp_mount_options:
   RedHat: mode=1777,strictatime,noexec,nodev,nosuid
-  Debian: mode=1777,strictatime,nodev,nosuid
+  Debian: mode=1777,strictatime,noexec,nodev,nosuid
 chrony_config_file:
   RedHat: /etc/chrony.conf
   Debian: /etc/chrony/chrony.conf

@@ -306,7 +306,7 @@
 - name: "NOTSCORED | 3.3.3 | PATCH | Ensure /etc/hosts.deny is configured"
   lineinfile:
       dest: /etc/hosts.deny
-      regexp: "^(#)?ALL"
+      regexp: "^(#)?\\s*ALL:"
       line: "ALL: ALL"
   when:
       - ubuntu1804cis_setup_tcp_wrappers
@@ -462,13 +462,11 @@
       - rule_3.5.2.1
 
 - name: "SCORED | 3.5.2.2 | PATCH | Ensure default deny firewall policy"
-  ufw:
-      rule: "{{ item.rule }}"
-      direction: "{{ item.direction }}"
+  ufw: "{{ item }}"
   with_items:
-      - { rule: deny, direction: incoming }
-      - { rule: deny, direction: outgoing }
-      - { rule: deny, direction: routed }
+      - { rule: deny, direction: in }
+      - { rule: deny, direction: out }
+      - { rule: deny, route: yes }
   when:
       - ubuntu1804cis_rule_3_5_2_2
       - ubuntu1804cis_firewall == "ufw"
@@ -540,6 +538,20 @@
         loop:
             - tcp
             - udp
+
+      - name: "NOTSCORED | 3.5.2.5 | PATCH | Ensure firewall rules exist for all open ports| custom tcp"
+        ufw:
+          rule: allow
+          proto: "tcp"
+          port: "{{ item }}"
+        loop: "{{ ubuntu1804cis_firewall_open_tcp_ports }}"
+
+      - name: "NOTSCORED | 3.5.2.5 | PATCH | Ensure firewall rules exist for all open ports| custom udp"
+        ufw:
+          rule: allow
+          proto: "udp"
+          port: "{{ item }}"
+        loop: "{{ ubuntu1804cis_firewall_open_udp_ports }}"
   when:
       - ubuntu1804cis_rule_3_5_2_5
       - ubuntu1804cis_firewall == "ufw"

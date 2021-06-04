@@ -109,12 +109,14 @@
 
 - name: "SCORED | 5.1.8 | PATCH | Ensure at/cron is restricted to authorized users"
   block:
-      - name: "SCORED | 5.1.8 | PATCH | Ensure at is restricted to authorized users"
+      - name: "SCORED | 5.1.8.1 | PATCH | Ensure at is restricted to authorized users"
         file:
             dest: /etc/at.deny
             state: absent
+        when:
+          - ubuntu1804cis_rule_5_1_8_1
 
-      - name: "SCORED | 5.1.8 | PATCH | Ensure at is restricted to authorized users"
+      - name: "SCORED | 5.1.8.2 | PATCH | Ensure at is restricted to authorized users"
         template:
             src: at.allow.j2
             dest: /etc/at.allow
@@ -122,12 +124,12 @@
             group: root
             mode: 0600
 
-      - name: "SCORED | 5.1.8 | PATCH | Ensure cron is restricted to authorized users"
+      - name: "SCORED | 5.1.8.3 | PATCH | Ensure cron is restricted to authorized users"
         file:
             dest: /etc/cron.deny
             state: absent
 
-      - name: "SCORED | 5.1.8 | PATCH | Ensure cron is restricted to authorized users"
+      - name: "SCORED | 5.1.8.4 | PATCH | Ensure cron is restricted to authorized users"
         template:
           src: cron.allow.j2
           dest: /etc/cron.allow
@@ -598,7 +600,8 @@
 - name: "SCORED | 5.3.3 | PATCH | Ensure password reuse is limited"
   lineinfile:
       dest: /etc/pam.d/common-password
-      line: "password required pam_pwhistory.so remember={{ ubuntu1804cis_pass['history'] }}"
+      regexp: "password\\s+\\w+\\s+pam_pwhistory\\.so\\s+remember.*"
+      line: "password        required                        pam_pwhistory.so remember={{ ubuntu1804cis_pass['history'] }}"
   when:
       - ubuntu1804cis_rule_5_3_3
   tags:
@@ -618,6 +621,19 @@
       - scored
       - patch
       - rule_5.3.4
+
+- name: "SCORED | 5.3.5 | PATCH | Ensure password creation retry is limited"
+  lineinfile:
+      dest: /etc/pam.d/common-password
+      regexp: "password\\s+\\w+\\s+pam_pwquality\\.so\\s+retry.*"
+      line: "password        requisite                       pam_pwquality.so retry={{ ubuntu1804cis_pass['retry'] }}"
+  when:
+      - ubuntu1804cis_rule_5_3_5
+  tags:
+      - level1
+      - scored
+      - patch
+      - rule_5.3.5
 
 - name: "SCORED | 5.4.1.1 | PATCH | Ensure password expiration is 365 days or less"
   lineinfile:
@@ -801,17 +817,18 @@
     - rule_5.4.5
     - scored
 
-- name: "NOTSCORED | 5.5 | PATCH | Ensure root login is restricted to system console"
-  command: /bin/true
-  changed_when: false
+- name: "SCORED | 5.6 | PATCH | Ensure root login is restricted to system console"
+  lineinfile:
+      state: absent
+      dest: /etc/securetty
+      regexp: "{{ ubuntu1804cis_restricted_consoles_regex }}"
   when:
-      - ubuntu1804cis_rule_5_5
+      - ubuntu1804cis_rule_5_6
   tags:
       - level1
       - patch
-      - rule_5.5
-      - notscored
-      - notimplemented
+      - rule_5.6
+      - scored
 
 - name: "SCORED | 5.6 | PATCH | Ensure access to the su command is restricted"
   lineinfile:
