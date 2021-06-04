@@ -23,9 +23,10 @@
   changed_when: false
   check_mode: false
 
+# TODO: test and make sure no error is thrown if there is actual empty password
 - name: "PRELIM | Gather accounts with empty password fields"
   shell: "set -o pipefail;
-      cat /etc/shadow | awk -F: '($2 == \"\" ) {j++;print $1; } END {exit j}'"
+      cat /etc/shadow | awk -F: '($2 == \"\" ) {j++;print $1; } END {exit}'"
   args:
       executable: /bin/bash
   register: empty_password_accounts
