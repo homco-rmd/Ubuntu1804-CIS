@@ -116,7 +116,7 @@
         when:
           - ubuntu1804cis_rule_5_1_8_1
 
-      - name: "SCORED | 5.1.8 | PATCH | Ensure at is restricted to authorized users"
+      - name: "SCORED | 5.1.8.2 | PATCH | Ensure at is restricted to authorized users"
         template:
             src: at.allow.j2
             dest: /etc/at.allow
@@ -124,12 +124,12 @@
             group: root
             mode: 0600
 
-      - name: "SCORED | 5.1.8 | PATCH | Ensure cron is restricted to authorized users"
+      - name: "SCORED | 5.1.8.3 | PATCH | Ensure cron is restricted to authorized users"
         file:
             dest: /etc/cron.deny
             state: absent
 
-      - name: "SCORED | 5.1.8 | PATCH | Ensure cron is restricted to authorized users"
+      - name: "SCORED | 5.1.8.4 | PATCH | Ensure cron is restricted to authorized users"
         template:
           src: cron.allow.j2
           dest: /etc/cron.allow
