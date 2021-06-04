@@ -340,6 +340,12 @@ ubuntu1804cis_is_router: false
 # IPv6 required
 ubuntu1804cis_ipv6_required: true
 
+# TCP Ports to open for Firewall
+ubuntu1804cis_firewall_open_tcp_ports: []
+
+# UDP Ports to open for Firewall
+ubuntu1804cis_firewall_open_udp_ports: []
+
 # AIDE
 ubuntu1804cis_config_aide: true
 # AIDE cron settings

@@ -538,6 +538,20 @@
         loop:
             - tcp
             - udp
+
+      - name: "NOTSCORED | 3.5.2.5 | PATCH | Ensure firewall rules exist for all open ports| custom tcp"
+        ufw:
+          rule: allow
+          proto: "tcp"
+          port: "{{ item }}"
+        loop: "{{ ubuntu1804cis_firewall_open_tcp_ports }}"
+
+      - name: "NOTSCORED | 3.5.2.5 | PATCH | Ensure firewall rules exist for all open ports| custom udp"
+        ufw:
+          rule: allow
+          proto: "udp"
+          port: "{{ item }}"
+        loop: "{{ ubuntu1804cis_firewall_open_udp_ports }}"
   when:
       - ubuntu1804cis_rule_3_5_2_5
       - ubuntu1804cis_firewall == "ufw"
