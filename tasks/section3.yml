@@ -462,13 +462,11 @@
       - rule_3.5.2.1
 
 - name: "SCORED | 3.5.2.2 | PATCH | Ensure default deny firewall policy"
-  ufw:
-      rule: "{{ item.rule }}"
-      direction: "{{ item.direction }}"
+  ufw: "{{ item }}"
   with_items:
-      - { rule: deny, direction: incoming }
-      - { rule: deny, direction: outgoing }
-      - { rule: deny, direction: routed }
+      - { rule: deny, direction: in }
+      - { rule: deny, direction: out }
+      - { rule: deny, route: yes }
   when:
       - ubuntu1804cis_rule_3_5_2_2
       - ubuntu1804cis_firewall == "ufw"
