@@ -190,7 +190,6 @@
   failed_when: false
   with_items: "{{ empty_password_accounts.stdout_lines }}"
   when:
-      - empty_password_accounts.rc
       - ubuntu1804cis_rule_6_2_1
   tags:
       - level1
