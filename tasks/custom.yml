@@ -1,0 +1,7 @@
+---
+- name: "NOTSCORED | CUSTOM | Enable logging for cron jobs"
+  lineinfile:
+    dest: /etc/rsyslog.d/50-default.conf
+    regexp: "^#?cron\\.\\*\\s+\\/var\\/log\\/cron.log"
+    line: "cron.*                         /var/log/cron.log"
+    state: present

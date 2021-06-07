@@ -7,6 +7,7 @@ ubuntu1804cis_skip_for_travis: false
 ubuntu1804cis_skip_service_checks: false
 
 ubuntu1804cis_notauto: false
+ubuntu1804cis_custom: false
 ubuntu1804cis_section1: true
 ubuntu1804cis_section2: true
 ubuntu1804cis_section3: true
