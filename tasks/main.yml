@@ -22,6 +22,11 @@
       - prelim_tasks
       - always
 
+- include: custom.yml
+  become: true
+  when: ubuntu1804cis_custom
+  tags: custom
+
 - include: section1.yml
   become: true
   when: ubuntu1804cis_section1
