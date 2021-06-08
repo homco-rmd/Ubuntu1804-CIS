@@ -17,6 +17,20 @@
       sysctl_set: true
   when: ansible_virtualization_type != "docker"
 
+- name: persist iptables ipv4 rules
+  become: true
+  shell: "set -o pipefail;
+      iptables-save > /etc/iptables/rules.v4"
+  args:
+    executable: /bin/bash
+
+- name: persist iptables ipv6 rules
+  become: true
+  shell: "set -o pipefail;
+      ip6tables-save > /etc/iptables/rules.v6"
+  args:
+    executable: /bin/bash
+
 - name: systemd restart tmp.mount
   become: true
   systemd:

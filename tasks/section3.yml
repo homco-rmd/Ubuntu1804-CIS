@@ -567,11 +567,17 @@
       - name: "NOTSCORED | 3.5.3.1 | PATCH | Ensure iptables are flushed | ipv4"
         iptables:
             flush: yes
+        changed_when: true
+        notify:
+          - persist iptables ipv4 rules
 
       - name: "NOTSCORED | 3.5.3.1 | PATCH | Ensure iptables are flushed | ipv6"
         iptables:
             flush: yes
             ip_version: ipv6
+        changed_when: true
+        notify:
+          - persist iptables ipv6 rules
         when: ubuntu1804cis_ipv6_required
   when:
       - ubuntu1804cis_rule_3_5_3_1
@@ -739,6 +745,9 @@
       - INPUT
       - OUTPUT
       - FORWARD
+  changed_when: true
+  notify:
+    - persist iptables ipv4 rules
   when:
       - ubuntu1804cis_rule_3_5_4_1_1
       - ubuntu1804cis_firewall == "iptables"
@@ -756,18 +765,23 @@
             chain: INPUT
             jump: ACCEPT
             in_interface: lo
+        changed_when: true
 
       - name: "SCORED | 3.5.4.1.2 | PATCH | Ensure loopback traffic is configured| egress lo allow any"
         iptables:
             chain: INPUT
             jump: ACCEPT
             in_interface: lo
+        changed_when: true
 
       - name: "SCORED | 3.5.4.1.2 | PATCH | Ensure loopback traffic is configured| ingress deny from lo network"
         iptables:
             chain: INPUT
             jump: DROP
             source: 127.0.0.0/8
+        changed_when: true
+  notify:
+    - persist iptables ipv4 rules
   when:
       - ubuntu1804cis_rule_3_5_4_1_2
       - ubuntu1804cis_firewall == "iptables"
@@ -790,6 +804,7 @@
             - tcp
             - udp
             - icmp
+        changed_when: true
 
       - name: "NOTSCORED | 3.5.4.1.3 | PATCH | Ensure outbound and established connections are configured | output"
         iptables:
@@ -801,6 +816,9 @@
             - tcp
             - udp
             - icmp
+        changed_when: true
+  notify:
+    - persist iptables ipv4 rules
   when:
       - ubuntu1804cis_rule_3_5_4_1_3
       - ubuntu1804cis_firewall == "iptables"
@@ -820,6 +838,7 @@
             ctstate: NEW
             protocol: tcp
             destination_port: 22
+        changed_when: true
 
       - name: "SCORED | 3.5.4.1.4 | PATCH | Ensure firewall rules exist for all open ports| dns"
         iptables:
@@ -831,6 +850,9 @@
         loop:
             - tcp
             - udp
+        changed_when: true
+  notify:
+    - persist iptables ipv4 rules
   when:
       - ubuntu1804cis_rule_3_5_4_1_4
       - ubuntu1804cis_firewall == "iptables"
@@ -850,6 +872,9 @@
       - INPUT
       - OUTPUT
       - FORWARD
+  changed_when: true
+  notify:
+    - persist iptables ipv6 rules
   when:
       - ubuntu1804cis_rule_3_5_4_2_1
       - ubuntu1804cis_firewall == "iptables"
@@ -869,6 +894,7 @@
             jump: ACCEPT
             in_interface: lo
             ip_version: ipv6
+        changed_when: true
 
       - name: "SCORED | 3.5.4.2.2 | PATCH | Ensure IPv6 loopback traffic is configured| egress lo allow any"
         iptables:
@@ -876,6 +902,7 @@
             jump: ACCEPT
             in_interface: lo
             ip_version: ipv6
+        changed_when: true
 
       - name: "SCORED | 3.5.4.2.2 | PATCH | Ensure IPv6 loopback traffic is configured| ingress deny from lo network"
         iptables:
@@ -883,6 +910,9 @@
             jump: DROP
             source: "::1"
             ip_version: ipv6
+        changed_when: true
+  notify:
+    - persist iptables ipv6 rules
   when:
       - ubuntu1804cis_rule_3_5_4_2_2
       - ubuntu1804cis_firewall == "iptables"
@@ -907,6 +937,7 @@
             - tcp
             - udp
             - icmp
+        changed_when: true
 
       - name: "NOTSCORED | 3.5.4.2.3 | PATCH | Ensure IPv6 outbound and established connections are configured | output"
         iptables:
@@ -919,6 +950,9 @@
             - tcp
             - udp
             - icmp
+        changed_when: true
+  notify:
+    - persist iptables ipv6 rules
   when:
       - ubuntu1804cis_rule_3_5_4_2_3
       - ubuntu1804cis_firewall == "iptables"
@@ -940,6 +974,7 @@
             protocol: tcp
             destination_port: 22
             ip_version: ipv6
+        changed_when: true
 
       - name: "NOTSCORED | 3.5.4.2.4 | PATCH | Ensure IPv6 firewall rules exist for all open ports| dns"
         iptables:
@@ -952,6 +987,9 @@
         loop:
             - tcp
             - udp
+        changed_when: true
+  notify:
+    - persist iptables ipv6 rules
   when:
       - ubuntu1804cis_rule_3_5_4_2_4
       - ubuntu1804cis_firewall == "iptables"

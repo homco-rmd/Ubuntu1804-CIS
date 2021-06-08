@@ -483,6 +483,9 @@ ubuntu1804cis_apply_upgrades: true
 prelim_check_package_command:
   RedHat: rpm -q
   Debian: dpkg -V
+iptables_persistent_package:
+  RedHat: iptables-services
+  Debian: iptables-persistent
 auditd_package:
   RedHat: audit
   Debian: auditd
