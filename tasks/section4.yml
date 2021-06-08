@@ -577,7 +577,22 @@
       with_items:
         - '{{ logrotate_confs.files + [{"path": "/etc/logrotate.conf"}] }}'
 
-    - name: "SCORED | 4.2.3.2 | PATCH | Ensure permissions on all logfiles in directory are updated"
+    - name: "SCORED | 4.2.3.2 | PATCH | Ensure logrotate permissions configured for apt history"
+      lineinfile:
+        dest: /etc/logrotate.d/apt
+        insertafter: '\/var\/log\/apt\/history\.log'
+        regexp: '^\s+create\s\d+\s\w+\s\w+$'
+        line: "  create 0640 root root"
+        state: present
+
+    - name: "SCORED | 4.2.3.3 | PATCH | Ensure tmpfiles permissions are configured"
+      replace:
+        path: /usr/lib/tmpfiles.d/var.conf
+        regexp: '(?P<begin>^\w\s\/var\/log\/\w+\s)[0-9]{3,}(\s+.*)?$'
+        replace: '\g<begin>0640\2'
+        backup: no
+
+    - name: "SCORED | 4.2.3.4 | PATCH | Ensure permissions on all logfiles in directory are updated"
       command: find /var/log -type f -exec chmod g-wx,o-rwx {} +
       changed_when: false
       failed_when: false
