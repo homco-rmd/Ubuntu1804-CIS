@@ -57,6 +57,7 @@
   changed_when: false
   when: not ubuntu1804cis_offline
 
+# setting this so the next step doesn't give interactive prompt
 - name: "PRELIM | Section 3.5.1.1 | Configure iptables"
   command: "echo iptables-persistent iptables-persistent/{{ item }} boolean true | sudo debconf-set-selections"
   with_items:
