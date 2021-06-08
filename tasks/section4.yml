@@ -561,17 +561,35 @@
       - rule_4.2.2.3
 
 - name: "SCORED | 4.2.3 | PATCH | Ensure permissions on all logfiles are configured"
-  command: find /var/log -type f -exec chmod g-wx,o-rwx {} +
-  changed_when: false
-  failed_when: false
+  block:
+    - name: "SCORED | 4.2.3.1 | PATCH | Identify logrotate configuration files"
+      find:
+        paths: "/etc/logrotate.d"
+        patterns: "*"
+      register: logrotate_confs
+
+    - name: "SCORED | 4.2.3.1 | PATCH | Ensure logrotate permissions are configured"
+      replace:
+        path: "{{ item.path }}"
+        regexp: '(?P<begin>^\s+create\s+)[0-9]{3,}(\s+.*)?$'
+        replace: '\g<begin>0640\2'
+        backup: no
+      with_items:
+        - '{{ logrotate_confs.files + [{"path": "/etc/logrotate.conf"}] }}'
+
+    - name: "SCORED | 4.2.3.2 | PATCH | Ensure permissions on all logfiles in directory are updated"
+      command: find /var/log -type f -exec chmod g-wx,o-rwx {} +
+      changed_when: false
+      failed_when: false
+
   when:
-      - ubuntu1804cis_rule_4_2_3
+    - ubuntu1804cis_rule_4_2_3
   tags:
-      - level1
-      - scored
-      - patch
-      - syslog
-      - rule_4.2.3
+    - level1
+    - scored
+    - patch
+    - syslog
+    - rule_4.2.3
 
 - name: "NOTSCORED | 4.3 | PATCH | Ensure logrotate is configured"
   block:
