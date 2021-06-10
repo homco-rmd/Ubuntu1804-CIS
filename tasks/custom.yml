@@ -5,3 +5,8 @@
     regexp: "^#?cron\\.\\*\\s+\\/var\\/log\\/cron.log"
     line: "cron.*                         /var/log/cron.log"
     state: present
+
+- name: "NOTSCORED | CUSTOM | /etc/sysctl.conf should be 0600"
+  file:
+    path: /etc/sysctl.conf
+    mode: 0600
