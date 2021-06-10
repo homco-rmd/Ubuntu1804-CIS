@@ -844,6 +844,17 @@
       - rule_5.6
       - scored
 
+- name: "SCORED | 5.6 | PATCH | Ensure access to the su command is restricted - wheel group is present"
+  group:
+      name: wheel
+  when:
+      - ubuntu1804cis_rule_5_6
+  tags:
+      - level1
+      - patch
+      - rule_5.6
+      - scored
+
 - name: "SCORED | 5.6 | PATCH | Ensure access to the su command is restricted - sudo group contains root"
   user:
       name: root
