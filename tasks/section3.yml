@@ -769,9 +769,9 @@
 
       - name: "SCORED | 3.5.4.1.2 | PATCH | Ensure loopback traffic is configured| egress lo allow any"
         iptables:
-            chain: INPUT
+            chain: OUTPUT
             jump: ACCEPT
-            in_interface: lo
+            out_interface: lo
         changed_when: true
 
       - name: "SCORED | 3.5.4.1.2 | PATCH | Ensure loopback traffic is configured| ingress deny from lo network"
